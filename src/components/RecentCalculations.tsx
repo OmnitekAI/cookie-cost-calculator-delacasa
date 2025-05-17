@@ -50,7 +50,7 @@ export const RecentCalculations: React.FC<RecentCalculationsProps> = ({
               <h3 className="font-medium">
                 {calculation.name} 
                 <span className="text-gray-500 ml-2">
-                  ({formatCurrency(calculation.costPerUnit)}})
+                  ({formatCurrency(calculation.costPerUnit)})
                 </span>
               </h3>
               <p className="text-sm text-gray-500">
