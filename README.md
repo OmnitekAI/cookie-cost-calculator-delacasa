@@ -3,7 +3,6 @@
 
 A web application for calculating the cost of homemade cookies based on ingredient costs. This tool helps bakers and cookie business owners calculate accurate pricing for their products.
 
-![DeLaCasa Cookie Cost Calculator](https://placeholder.com/cookie-calculator)
 
 ## About
 
@@ -18,8 +17,7 @@ This application is part of the always free tools provided by [DeLaCasa](https:/
 
 ## Online Versions
 
-- **Free Version**: [https://costs.delacasa.app/](https://costs.delacasa.app/)
-- **Full Version**: Also available at [https://costs.delacasa.app/](https://costs.delacasa.app/)
+- **Free Full Version**: [https://costs.delacasa.app/](https://costs.delacasa.app/)
 
 ## Features
 
