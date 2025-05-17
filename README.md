@@ -1,73 +1,70 @@
-# Welcome to your Lovable project
 
-## Project info
+# DeLaCasa Cookie Cost Calculator
 
-**URL**: https://lovable.dev/projects/7c091626-1632-4e0c-948e-b1489e7a1207
+A web application for calculating the cost of homemade cookies based on ingredient costs. This tool helps bakers and cookie business owners calculate accurate pricing for their products.
 
-## How can I edit this code?
+![DeLaCasa Cookie Cost Calculator](https://placeholder.com/cookie-calculator)
 
-There are several ways of editing your application.
+## About
 
-**Use Lovable**
+The Cookie Cost Calculator is designed to help you:
+- Track ingredients and their costs
+- Calculate the cost per batch and per cookie
+- Visualize ingredient cost distribution
+- Save and manage multiple cookie cost calculations
+- Export and import your calculation data
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/7c091626-1632-4e0c-948e-b1489e7a1207) and start prompting.
+This application is part of the always free tools provided by [DeLaCasa](https://delacasa.app/).
 
-Changes made via Lovable will be committed automatically to this repo.
+## Online Versions
 
-**Use your preferred IDE**
+- **Free Version**: [https://costs.delacasa.app/](https://costs.delacasa.app/)
+- **Full Version**: Also available at [https://costs.delacasa.app/](https://costs.delacasa.app/)
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+## Features
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+- 📊 Ingredient cost breakdown chart
+- 💾 Local storage for saving calculations
+- 🔄 Import/export functionality for backing up data
+- 🌐 Multilingual support (English and Spanish)
+- 📱 Responsive design for desktop and mobile
 
-Follow these steps:
+## Running Locally
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+Follow these steps to run the application on your local machine:
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+1. **Clone the repository**
+   ```sh
+   git clone <YOUR_GIT_URL>
+   cd cookie-cost-calculator
+   ```
 
-# Step 3: Install the necessary dependencies.
-npm i
+2. **Install dependencies**
+   ```sh
+   npm install
+   ```
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
+3. **Start the development server**
+   ```sh
+   npm run dev
+   ```
 
-**Edit a file directly in GitHub**
+4. **Open in your browser**
+   Open [http://localhost:8080](http://localhost:8080) in your browser to see the application.
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+## Technologies Used
 
-**Use GitHub Codespaces**
+- React with TypeScript
+- Tailwind CSS for styling
+- shadcn/ui component library
+- Recharts for data visualization
+- Vite for fast development and building
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+## Contributing
 
-## What technologies are used for this project?
+Contributions are welcome! Feel free to open issues or submit pull requests if you have suggestions for improvements.
 
-This project is built with:
+## License
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+This project is part of the DeLaCasa toolkit. See [https://delacasa.app/](https://delacasa.app/) for more information.
 
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/7c091626-1632-4e0c-948e-b1489e7a1207) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
