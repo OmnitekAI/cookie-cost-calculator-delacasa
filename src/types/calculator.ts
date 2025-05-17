@@ -5,7 +5,6 @@ export interface Ingredient {
   quantity: number;
   unit: string;
   pricePerUnit: number;
-  unitConversion?: number;
 }
 
 export interface Calculation {

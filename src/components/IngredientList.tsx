@@ -46,8 +46,8 @@ export const IngredientList: React.FC<IngredientListProps> = ({
     <div className="mt-4">
       {ingredients.length > 0 && (
         <div className="grid grid-cols-1 gap-y-4">
-          <div className="grid grid-cols-12 gap-2">
-            <div className="col-span-2">
+          <div className="grid grid-cols-11 gap-2">
+            <div className="col-span-3">
               <span className="text-sm font-medium">
                 {getTranslation('ingredientName', language)}
               </span>
@@ -62,14 +62,9 @@ export const IngredientList: React.FC<IngredientListProps> = ({
                 {getTranslation('unit', language)}
               </span>
             </div>
-            <div className="col-span-2">
-              <span className="text-sm font-medium">
-                {getTranslation('pricePerUnit', language)}
-              </span>
-            </div>
             <div className="col-span-3">
               <span className="text-sm font-medium">
-                {getTranslation('unitConversion', language)}
+                {getTranslation('pricePerUnit', language)}
               </span>
             </div>
           </div>
@@ -79,9 +74,9 @@ export const IngredientList: React.FC<IngredientListProps> = ({
       {ingredients.map((ingredient) => (
         <div 
           key={ingredient.id} 
-          className="grid grid-cols-12 gap-2 items-center mt-2"
+          className="grid grid-cols-11 gap-2 items-center mt-2"
         >
-          <div className="col-span-2">
+          <div className="col-span-3">
             <Input
               value={ingredient.name}
               onChange={(e) => handleIngredientChange(ingredient.id, 'name', e.target.value)}
@@ -105,22 +100,12 @@ export const IngredientList: React.FC<IngredientListProps> = ({
               placeholder="g"
             />
           </div>
-          <div className="col-span-2">
+          <div className="col-span-3">
             <Input
               type="number"
               value={ingredient.pricePerUnit || ''}
               onChange={(e) => handleIngredientChange(ingredient.id, 'pricePerUnit', e.target.value)}
               placeholder="4.2"
-              min={0}
-              step="0.01"
-            />
-          </div>
-          <div className="col-span-3">
-            <Input
-              type="number"
-              value={ingredient.unitConversion || ''}
-              onChange={(e) => handleIngredientChange(ingredient.id, 'unitConversion', e.target.value)}
-              placeholder="1"
               min={0}
               step="0.01"
             />
