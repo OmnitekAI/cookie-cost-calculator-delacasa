@@ -1,6 +1,6 @@
 
 import React, { useState, useRef } from 'react';
-import { Menu, Languages } from 'lucide-react';
+import { Menu, Languages, ExternalLink } from 'lucide-react';
 import { 
   DropdownMenu,
   DropdownMenuContent,
@@ -133,6 +133,18 @@ export const MenuBar: React.FC<MenuBarProps> = ({ onCalculationsUpdate }) => {
             {language === 'en' 
               ? getTranslation('spanish', language) 
               : getTranslation('english', language)}
+          </DropdownMenuItem>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem asChild>
+            <a 
+              href="https://delacasa.app/" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="flex items-center"
+            >
+              DeLaCasa
+              <ExternalLink className="ml-2" size={14} />
+            </a>
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
