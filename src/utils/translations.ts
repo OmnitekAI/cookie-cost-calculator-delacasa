@@ -17,6 +17,7 @@ type TranslationKey =
   | 'costPerUnit'
   | 'save'
   | 'saveAs'
+  | 'share'
   | 'recentCalculations'
   | 'loadCalculation'
   | 'confirmLoad'
@@ -34,7 +35,11 @@ type TranslationKey =
   | 'importSuccess'
   | 'exportSuccess'
   | 'invalidImportData'
-  | 'close';
+  | 'close'
+  | 'sharedCalculationLoaded'
+  | 'linkCopied'
+  | 'shareDescription'
+  | 'shareableLink';
 
 type Translations = {
   [key in TranslationKey]: {
@@ -103,6 +108,10 @@ export const translations: Translations = {
   saveAs: {
     en: 'Save As',
     es: 'Guardar Como'
+  },
+  share: {
+    en: 'Share',
+    es: 'Compartir'
   },
   recentCalculations: {
     en: 'Recent Calculations',
@@ -175,6 +184,23 @@ export const translations: Translations = {
   close: {
     en: 'Close',
     es: 'Cerrar'
+  },
+  // New translations for sharing functionality
+  sharedCalculationLoaded: {
+    en: 'Shared calculation loaded',
+    es: 'Cálculo compartido cargado'
+  },
+  linkCopied: {
+    en: 'Link copied to clipboard',
+    es: 'Enlace copiado al portapapeles'
+  },
+  shareDescription: {
+    en: 'Share this link to let others see your calculation',
+    es: 'Comparte este enlace para que otros vean tu cálculo'
+  },
+  shareableLink: {
+    en: 'Shareable Link',
+    es: 'Enlace para compartir'
   }
 };
 
