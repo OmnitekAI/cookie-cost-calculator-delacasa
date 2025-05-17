@@ -19,6 +19,7 @@ import {
   Legend
 } from 'recharts';
 import { Progress } from '@/components/ui/progress';
+import { cn } from '@/lib/utils';
 
 interface IngredientCostChartProps {
   ingredients: Ingredient[];
@@ -101,24 +102,30 @@ export const IngredientCostChart: React.FC<IngredientCostChartProps> = ({
       
       {/* Legend with progress bars */}
       <div className="space-y-3">
-        {data.map((item, index) => (
-          <div key={`legend-${index}`} className="flex flex-col">
-            <div className="flex justify-between mb-1">
-              <span className="text-sm font-medium">
-                {item.name}
-              </span>
-              <span className="text-sm font-medium">
-                {formatCurrency(item.cost)} ({item.value.toFixed(1)}%)
-              </span>
+        {data.map((item, index) => {
+          // Create a custom style to set the indicator color inline
+          const progressBarStyle = { 
+            '--progress-color': item.fill 
+          } as React.CSSProperties;
+          
+          return (
+            <div key={`legend-${index}`} className="flex flex-col">
+              <div className="flex justify-between mb-1">
+                <span className="text-sm font-medium">
+                  {item.name}
+                </span>
+                <span className="text-sm font-medium">
+                  {formatCurrency(item.cost)} ({item.value.toFixed(1)}%)
+                </span>
+              </div>
+              <Progress
+                value={item.value}
+                className="h-2 bg-gray-100"
+                style={progressBarStyle}
+              />
             </div>
-            <Progress
-              value={item.value}
-              className="h-2"
-              style={{ backgroundColor: 'rgba(0,0,0,0.05)' }}
-              indicatorClassName={`bg-[${item.fill}]`}
-            />
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );
