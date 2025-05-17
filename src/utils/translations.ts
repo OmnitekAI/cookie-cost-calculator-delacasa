@@ -1,4 +1,3 @@
-
 import { Language } from "@/types/calculator";
 
 type TranslationKey = 
@@ -39,7 +38,9 @@ type TranslationKey =
   | 'sharedCalculationLoaded'
   | 'linkCopied'
   | 'shareDescription'
-  | 'shareableLink';
+  | 'shareableLink'
+  | 'new'
+  | 'confirmNew';
 
 type Translations = {
   [key in TranslationKey]: {
@@ -185,7 +186,6 @@ export const translations: Translations = {
     en: 'Close',
     es: 'Cerrar'
   },
-  // New translations for sharing functionality
   sharedCalculationLoaded: {
     en: 'Shared calculation loaded',
     es: 'Cálculo compartido cargado'
@@ -201,6 +201,14 @@ export const translations: Translations = {
   shareableLink: {
     en: 'Shareable Link',
     es: 'Enlace para compartir'
+  },
+  new: {
+    en: 'New',
+    es: 'Nuevo'
+  },
+  confirmNew: {
+    en: 'Are you sure you want to create a new calculation? Unsaved changes will be lost.',
+    es: '¿Estás seguro de que quieres crear un nuevo cálculo? Los cambios no guardados se perderán.'
   }
 };
 
