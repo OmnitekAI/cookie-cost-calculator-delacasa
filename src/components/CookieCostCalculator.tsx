@@ -1,120 +1,40 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Calculation, Ingredient, Language } from '@/types/calculator';
+import { Calculation } from '@/types/calculator';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { getTranslation } from '@/utils/translations';
-import { saveCalculation, getRecentCalculations } from '@/utils/storage';
+import { saveCalculation } from '@/utils/storage';
 import { CalculationHeader } from './CalculationHeader';
 import { IngredientList } from './IngredientList';
 import { RecentCalculations } from './RecentCalculations';
 import { MenuBar } from './MenuBar';
+import { NameDialog } from './dialogs/NameDialog';
+import { ConfirmLoadDialog } from './dialogs/ConfirmLoadDialog';
+import { CalculationActions } from './CalculationActions';
+import { CostDisplay } from './CostDisplay';
+import { useCalculation } from '@/hooks/useCalculation';
 
 const CookieCostCalculator: React.FC = () => {
   const { language } = useLanguage();
   
-  // Current calculation state
-  const [currentCalculation, setCurrentCalculation] = useState<Calculation>({
-    id: uuidv4(),
-    name: '',
-    numCookiesInBatch: 16,
-    cookingTime: 0,
-    ingredients: [],
-    costPerUnit: 0,
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-  });
-  
-  const [recentCalculations, setRecentCalculations] = useState<Calculation[]>([]);
+  const {
+    currentCalculation,
+    setCurrentCalculation,
+    recentCalculations,
+    loadRecentCalculations,
+    handleNameChange,
+    handleNumCookiesChange,
+    handleCookingTimeChange,
+    handleAddIngredient,
+    handleRemoveIngredient,
+    handleUpdateIngredient,
+    calculateCost
+  } = useCalculation();
   
   // Dialogs state
   const [nameDialogOpen, setNameDialogOpen] = useState(false);
   const [confirmLoadDialogOpen, setConfirmLoadDialogOpen] = useState(false);
   const [calculationToLoad, setCalculationToLoad] = useState<Calculation | null>(null);
-  
-  useEffect(() => {
-    // Load recent calculations on mount
-    loadRecentCalculations();
-  }, []);
-  
-  const loadRecentCalculations = () => {
-    const recent = getRecentCalculations();
-    setRecentCalculations(recent);
-  };
-  
-  const handleNameChange = (name: string) => {
-    setCurrentCalculation(prev => ({ ...prev, name }));
-  };
-  
-  const handleNumCookiesChange = (value: string) => {
-    const numCookies = parseInt(value, 10) || 0;
-    setCurrentCalculation(prev => ({ ...prev, numCookiesInBatch: numCookies }));
-  };
-  
-  const handleCookingTimeChange = (value: string) => {
-    const cookingTime = parseInt(value, 10) || 0;
-    setCurrentCalculation(prev => ({ ...prev, cookingTime }));
-  };
-  
-  const handleAddIngredient = () => {
-    const newIngredient: Ingredient = {
-      id: uuidv4(),
-      name: '',
-      quantity: 0,
-      unit: 'g',
-      pricePerUnit: 0,
-    };
-    
-    setCurrentCalculation(prev => ({
-      ...prev,
-      ingredients: [...prev.ingredients, newIngredient]
-    }));
-  };
-  
-  const handleRemoveIngredient = (id: string) => {
-    setCurrentCalculation(prev => ({
-      ...prev,
-      ingredients: prev.ingredients.filter(i => i.id !== id)
-    }));
-  };
-  
-  const handleUpdateIngredient = (updatedIngredient: Ingredient) => {
-    setCurrentCalculation(prev => ({
-      ...prev,
-      ingredients: prev.ingredients.map(i => 
-        i.id === updatedIngredient.id ? updatedIngredient : i
-      )
-    }));
-  };
-  
-  const calculateCost = () => {
-    let totalCost = 0;
-    
-    currentCalculation.ingredients.forEach(ingredient => {
-      totalCost += ingredient.quantity * ingredient.pricePerUnit;
-    });
-    
-    // Calculate per cookie/unit cost
-    const costPerUnit = currentCalculation.numCookiesInBatch > 0 
-      ? totalCost / currentCalculation.numCookiesInBatch 
-      : 0;
-    
-    setCurrentCalculation(prev => ({
-      ...prev,
-      costPerUnit,
-      updatedAt: new Date().toISOString()
-    }));
-  };
   
   const handleSave = () => {
     if (!currentCalculation.name.trim()) {
@@ -191,86 +111,33 @@ const CookieCostCalculator: React.FC = () => {
         onUpdateIngredient={handleUpdateIngredient}
       />
       
-      <div className="flex justify-between mt-4">
-        <Button
-          onClick={handleAddIngredient}
-          className="bg-cookies-blue hover:bg-blue-600"
-        >
-          {getTranslation('addIngredient', language)}
-        </Button>
-        
-        <Button
-          onClick={calculateCost}
-          className="bg-cookies-green hover:bg-green-600"
-        >
-          {getTranslation('calculateCost', language)}
-        </Button>
-      </div>
+      <CalculationActions
+        onAddIngredient={handleAddIngredient}
+        onCalculateCost={calculateCost}
+        onSave={handleSave}
+        onSaveAs={handleSaveAs}
+      />
       
-      <div className="mt-6 p-4 bg-gray-100 rounded">
-        <p className="text-lg font-semibold">
-          {getTranslation('costPerUnit', language)}: ${currentCalculation.costPerUnit.toFixed(2)}
-        </p>
-      </div>
-      
-      <div className="flex gap-2 mt-4">
-        <Button onClick={handleSave}>
-          {getTranslation('save', language)}
-        </Button>
-        <Button onClick={handleSaveAs} variant="outline">
-          {getTranslation('saveAs', language)}
-        </Button>
-      </div>
+      <CostDisplay costPerUnit={currentCalculation.costPerUnit} />
       
       <RecentCalculations
         calculations={recentCalculations}
         onLoadCalculation={handleLoadCalculation}
       />
       
-      {/* Name dialog */}
-      <Dialog open={nameDialogOpen} onOpenChange={setNameDialogOpen}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>{getTranslation('enterName', language)}</DialogTitle>
-            <DialogDescription>
-              {getTranslation('nameRequired', language)}
-            </DialogDescription>
-          </DialogHeader>
-          <Input
-            defaultValue={currentCalculation.name}
-            onChange={(e) => handleNameChange(e.target.value)}
-            placeholder={getTranslation('name', language)}
-          />
-          <DialogFooter>
-            <Button 
-              onClick={() => handleNameDialogSave(currentCalculation.name)}
-              disabled={!currentCalculation.name.trim()}
-            >
-              {getTranslation('save', language)}
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+      <NameDialog
+        open={nameDialogOpen}
+        onOpenChange={setNameDialogOpen}
+        onSave={handleNameDialogSave}
+        name={currentCalculation.name}
+        onNameChange={handleNameChange}
+      />
       
-      {/* Confirm load dialog */}
-      <Dialog open={confirmLoadDialogOpen} onOpenChange={setConfirmLoadDialogOpen}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>{getTranslation('loadCalculation', language)}</DialogTitle>
-            <DialogDescription>
-              {getTranslation('confirmLoad', language)}
-            </DialogDescription>
-          </DialogHeader>
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setConfirmLoadDialogOpen(false)}>
-              {getTranslation('cancel', language)}
-            </Button>
-            <Button onClick={confirmLoadCalculation}>
-              {getTranslation('ok', language)}
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+      <ConfirmLoadDialog
+        open={confirmLoadDialogOpen}
+        onOpenChange={setConfirmLoadDialogOpen}
+        onConfirm={confirmLoadCalculation}
+      />
     </div>
   );
 };
