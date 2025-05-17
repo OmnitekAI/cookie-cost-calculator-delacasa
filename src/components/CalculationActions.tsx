@@ -3,7 +3,7 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { getTranslation } from '@/utils/translations';
-import { Share } from 'lucide-react';
+import { Share, PlusCircle } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 interface CalculationActionsProps {
@@ -12,6 +12,7 @@ interface CalculationActionsProps {
   onSave: () => void;
   onSaveAs: () => void;
   onShare: () => void;
+  onNew: () => void;
 }
 
 export const CalculationActions: React.FC<CalculationActionsProps> = ({
@@ -19,7 +20,8 @@ export const CalculationActions: React.FC<CalculationActionsProps> = ({
   onCalculateCost,
   onSave,
   onSaveAs,
-  onShare
+  onShare,
+  onNew
 }) => {
   const { language } = useLanguage();
   const { toast } = useToast();
@@ -43,6 +45,10 @@ export const CalculationActions: React.FC<CalculationActionsProps> = ({
       </div>
       
       <div className="flex gap-2 mt-4">
+        <Button onClick={onNew} variant="outline">
+          <PlusCircle className="mr-2 h-4 w-4" />
+          {getTranslation('new', language)}
+        </Button>
         <Button onClick={onSave}>
           {getTranslation('save', language)}
         </Button>
@@ -51,7 +57,7 @@ export const CalculationActions: React.FC<CalculationActionsProps> = ({
         </Button>
         <Button onClick={onShare} variant="secondary">
           <Share className="mr-2 h-4 w-4" />
-          {getTranslation('share', language) || "Share"}
+          {getTranslation('share', language)}
         </Button>
       </div>
     </div>

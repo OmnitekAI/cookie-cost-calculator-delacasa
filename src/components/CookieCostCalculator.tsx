@@ -11,6 +11,7 @@ import { RecentCalculations } from './RecentCalculations';
 import { MenuBar } from './MenuBar';
 import { NameDialog } from './dialogs/NameDialog';
 import { ConfirmLoadDialog } from './dialogs/ConfirmLoadDialog';
+import { ConfirmNewDialog } from './dialogs/ConfirmNewDialog';
 import { CalculationActions } from './CalculationActions';
 import { CostDisplay } from './CostDisplay';
 import { useCalculation } from '@/hooks/useCalculation';
@@ -32,12 +33,14 @@ const CookieCostCalculator: React.FC = () => {
     handleAddIngredient,
     handleRemoveIngredient,
     handleUpdateIngredient,
-    calculateCost
+    calculateCost,
+    initializeNewCalculation
   } = useCalculation();
   
   // Dialogs state
   const [nameDialogOpen, setNameDialogOpen] = useState(false);
   const [confirmLoadDialogOpen, setConfirmLoadDialogOpen] = useState(false);
+  const [confirmNewDialogOpen, setConfirmNewDialogOpen] = useState(false);
   const [calculationToLoad, setCalculationToLoad] = useState<Calculation | null>(null);
   
   // Check for shared calculation on component mount
@@ -48,7 +51,7 @@ const CookieCostCalculator: React.FC = () => {
       if (decodedCalculation) {
         setCurrentCalculation(decodedCalculation);
         toast({
-          title: getTranslation('sharedCalculationLoaded', language) || "Shared calculation loaded",
+          title: getTranslation('sharedCalculationLoaded', language),
           description: decodedCalculation.name,
         });
       }
@@ -84,18 +87,27 @@ const CookieCostCalculator: React.FC = () => {
     // Copy to clipboard
     navigator.clipboard.writeText(shareableLink).then(() => {
       toast({
-        title: getTranslation('linkCopied', language) || "Link copied to clipboard",
-        description: getTranslation('shareDescription', language) || "Share this link to let others see your calculation",
+        title: getTranslation('linkCopied', language),
+        description: getTranslation('shareDescription', language),
       });
     }).catch(err => {
       console.error('Failed to copy: ', err);
       // Show the link in a dialog or alert as fallback
       toast({
-        title: getTranslation('shareableLink', language) || "Shareable Link",
+        title: getTranslation('shareableLink', language),
         description: shareableLink,
         variant: "destructive",
       });
     });
+  };
+  
+  const handleNew = () => {
+    setConfirmNewDialogOpen(true);
+  };
+  
+  const confirmNew = () => {
+    initializeNewCalculation();
+    setConfirmNewDialogOpen(false);
   };
   
   const handleNameDialogSave = (name: string) => {
@@ -157,6 +169,7 @@ const CookieCostCalculator: React.FC = () => {
         onSave={handleSave}
         onSaveAs={handleSaveAs}
         onShare={handleShare}
+        onNew={handleNew}
       />
       
       <CostDisplay costPerUnit={currentCalculation.costPerUnit} />
@@ -178,6 +191,12 @@ const CookieCostCalculator: React.FC = () => {
         open={confirmLoadDialogOpen}
         onOpenChange={setConfirmLoadDialogOpen}
         onConfirm={confirmLoadCalculation}
+      />
+      
+      <ConfirmNewDialog
+        open={confirmNewDialogOpen}
+        onOpenChange={setConfirmNewDialogOpen}
+        onConfirm={confirmNew}
       />
     </div>
   );

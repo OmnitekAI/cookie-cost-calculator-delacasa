@@ -29,6 +29,20 @@ export const useCalculation = () => {
     setRecentCalculations(recent);
   };
   
+  // Initialize a new blank calculation
+  const initializeNewCalculation = () => {
+    setCurrentCalculation({
+      id: uuidv4(),
+      name: '',
+      numCookiesInBatch: 16,
+      cookingTime: 0,
+      ingredients: [],
+      costPerUnit: 0,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    });
+  };
+  
   const handleNameChange = (name: string) => {
     setCurrentCalculation(prev => ({ ...prev, name }));
   };
@@ -104,6 +118,7 @@ export const useCalculation = () => {
     handleAddIngredient,
     handleRemoveIngredient,
     handleUpdateIngredient,
-    calculateCost
+    calculateCost,
+    initializeNewCalculation
   };
 };
