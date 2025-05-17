@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { Calculation } from '@/types/calculator';
@@ -14,6 +13,7 @@ import { ConfirmLoadDialog } from './dialogs/ConfirmLoadDialog';
 import { ConfirmNewDialog } from './dialogs/ConfirmNewDialog';
 import { CalculationActions } from './CalculationActions';
 import { CostDisplay } from './CostDisplay';
+import { IngredientCostChart } from './IngredientCostChart';
 import { useCalculation } from '@/hooks/useCalculation';
 import { createShareableLink, decodeCalculation, getSharedCalculationFromUrl } from '@/utils/sharing';
 import { useToast } from '@/hooks/use-toast';
@@ -162,6 +162,16 @@ const CookieCostCalculator: React.FC = () => {
         onRemoveIngredient={handleRemoveIngredient}
         onUpdateIngredient={handleUpdateIngredient}
       />
+      
+      {/* Add the IngredientCostChart component */}
+      {currentCalculation.ingredients.length > 0 && (
+        <IngredientCostChart 
+          ingredients={currentCalculation.ingredients} 
+          totalCost={currentCalculation.ingredients.reduce(
+            (sum, ingredient) => sum + ingredient.quantity * ingredient.pricePerUnit, 0
+          )}
+        />
+      )}
       
       <CalculationActions
         onAddIngredient={handleAddIngredient}
