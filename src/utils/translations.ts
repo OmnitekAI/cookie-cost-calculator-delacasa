@@ -40,7 +40,10 @@ type TranslationKey =
   | 'shareDescription'
   | 'shareableLink'
   | 'new'
-  | 'confirmNew';
+  | 'confirmNew'
+  | 'ingredientCostBreakdown'
+  | 'noIngredientsAdded'
+  | 'unnamedIngredient';
 
 type Translations = {
   [key in TranslationKey]: {
@@ -209,6 +212,18 @@ export const translations: Translations = {
   confirmNew: {
     en: 'Are you sure you want to create a new calculation? Unsaved changes will be lost.',
     es: '¿Estás seguro de que quieres crear un nuevo cálculo? Los cambios no guardados se perderán.'
+  },
+  ingredientCostBreakdown: {
+    en: 'Ingredient Cost Breakdown',
+    es: 'Desglose de Costos por Ingrediente'
+  },
+  noIngredientsAdded: {
+    en: 'No ingredients added yet',
+    es: 'Aún no se han añadido ingredientes'
+  },
+  unnamedIngredient: {
+    en: 'Unnamed Ingredient',
+    es: 'Ingrediente sin Nombre'
   }
 };
 
