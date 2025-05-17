@@ -3,21 +3,26 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { getTranslation } from '@/utils/translations';
+import { Share } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
 
 interface CalculationActionsProps {
   onAddIngredient: () => void;
   onCalculateCost: () => void;
   onSave: () => void;
   onSaveAs: () => void;
+  onShare: () => void;
 }
 
 export const CalculationActions: React.FC<CalculationActionsProps> = ({
   onAddIngredient,
   onCalculateCost,
   onSave,
-  onSaveAs
+  onSaveAs,
+  onShare
 }) => {
   const { language } = useLanguage();
+  const { toast } = useToast();
   
   return (
     <div>
@@ -43,6 +48,10 @@ export const CalculationActions: React.FC<CalculationActionsProps> = ({
         </Button>
         <Button onClick={onSaveAs} variant="outline">
           {getTranslation('saveAs', language)}
+        </Button>
+        <Button onClick={onShare} variant="secondary">
+          <Share className="mr-2 h-4 w-4" />
+          {getTranslation('share', language) || "Share"}
         </Button>
       </div>
     </div>

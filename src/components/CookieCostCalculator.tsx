@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { Calculation } from '@/types/calculator';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -14,9 +14,12 @@ import { ConfirmLoadDialog } from './dialogs/ConfirmLoadDialog';
 import { CalculationActions } from './CalculationActions';
 import { CostDisplay } from './CostDisplay';
 import { useCalculation } from '@/hooks/useCalculation';
+import { createShareableLink, decodeCalculation, getSharedCalculationFromUrl } from '@/utils/sharing';
+import { useToast } from '@/hooks/use-toast';
 
 const CookieCostCalculator: React.FC = () => {
   const { language } = useLanguage();
+  const { toast } = useToast();
   
   const {
     currentCalculation,
@@ -36,6 +39,21 @@ const CookieCostCalculator: React.FC = () => {
   const [nameDialogOpen, setNameDialogOpen] = useState(false);
   const [confirmLoadDialogOpen, setConfirmLoadDialogOpen] = useState(false);
   const [calculationToLoad, setCalculationToLoad] = useState<Calculation | null>(null);
+  
+  // Check for shared calculation on component mount
+  useEffect(() => {
+    const sharedCalculationParam = getSharedCalculationFromUrl();
+    if (sharedCalculationParam) {
+      const decodedCalculation = decodeCalculation(sharedCalculationParam);
+      if (decodedCalculation) {
+        setCurrentCalculation(decodedCalculation);
+        toast({
+          title: getTranslation('sharedCalculationLoaded', language) || "Shared calculation loaded",
+          description: decodedCalculation.name,
+        });
+      }
+    }
+  }, []);
   
   const handleSave = () => {
     if (!currentCalculation.name.trim()) {
@@ -57,6 +75,27 @@ const CookieCostCalculator: React.FC = () => {
   const handleSaveAs = () => {
     // Always show the name dialog for "Save As"
     setNameDialogOpen(true);
+  };
+  
+  const handleShare = () => {
+    // Generate shareable link
+    const shareableLink = createShareableLink(currentCalculation);
+    
+    // Copy to clipboard
+    navigator.clipboard.writeText(shareableLink).then(() => {
+      toast({
+        title: getTranslation('linkCopied', language) || "Link copied to clipboard",
+        description: getTranslation('shareDescription', language) || "Share this link to let others see your calculation",
+      });
+    }).catch(err => {
+      console.error('Failed to copy: ', err);
+      // Show the link in a dialog or alert as fallback
+      toast({
+        title: getTranslation('shareableLink', language) || "Shareable Link",
+        description: shareableLink,
+        variant: "destructive",
+      });
+    });
   };
   
   const handleNameDialogSave = (name: string) => {
@@ -117,6 +156,7 @@ const CookieCostCalculator: React.FC = () => {
         onCalculateCost={calculateCost}
         onSave={handleSave}
         onSaveAs={handleSaveAs}
+        onShare={handleShare}
       />
       
       <CostDisplay costPerUnit={currentCalculation.costPerUnit} />
