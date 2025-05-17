@@ -4,6 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { Calculation } from '@/types/calculator';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { saveCalculation } from '@/utils/storage';
+import { getTranslation } from '@/utils/translations';
 import { CalculationHeader } from './CalculationHeader';
 import { IngredientList } from './IngredientList';
 import { RecentCalculations } from './RecentCalculations';
